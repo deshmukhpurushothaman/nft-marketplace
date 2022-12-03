@@ -10,7 +10,13 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "hardhat/console.sol";
 
 contract NFT is ERC721, ERC721URIStorage, ERC721Enumerable {
-    constructor() ERC721("My First Token", "MFT") {}
+    address payable owner;
+    //The fee charged by the marketplace to be allowed to list an NFT
+    uint256 listPrice = 0.01 ether;
+
+    constructor() ERC721("My First Token", "MFT") {
+        owner = payable(msg.sender);
+    }
 
     using Address for address;
     using Counters for Counters.Counter;
@@ -19,7 +25,7 @@ contract NFT is ERC721, ERC721URIStorage, ERC721Enumerable {
     Counters.Counter public _tokenIds;
 
     mapping(string => bool) public nftUri;
-    mapping(uint256 => address) public owner;
+    // mapping(uint256 => address) public owner;
 
     struct ListedToken {
         uint256 tokenId;
@@ -77,18 +83,18 @@ contract NFT is ERC721, ERC721URIStorage, ERC721Enumerable {
      *
      * @param owner - Owner of the Tokens
      */
-    function getOwnerTokens(address owner)
-        public
-        view
-        returns (uint256[] memory)
-    {
-        uint256 count = balanceOf(owner);
-        uint256[] memory result = new uint256[](count);
-        for (uint256 index = 0; index < count; index++) {
-            result[index] = tokenOfOwnerByIndex(owner, index);
-        }
-        return result;
-    }
+    // function getOwnerTokens(address owner)
+    //     public
+    //     view
+    //     returns (uint256[] memory)
+    // {
+    //     uint256 count = balanceOf(owner);
+    //     uint256[] memory result = new uint256[](count);
+    //     for (uint256 index = 0; index < count; index++) {
+    //         result[index] = tokenOfOwnerByIndex(owner, index);
+    //     }
+    //     return result;
+    // }
 
     function transferFrom(
         address from,
